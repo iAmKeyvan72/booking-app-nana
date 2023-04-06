@@ -36,7 +36,12 @@ func main() {
 		fmt.Println("How many tickets you need?")
 		fmt.Scan(&userTickets)
 
-		remainingTickets = conferenceTickets - userTickets
+		if userTickets > remainingTickets {
+			fmt.Printf("We only have %v tickets remaining\n", remainingTickets)
+			break
+		}
+
+		remainingTickets = remainingTickets - userTickets
 		bookings = append(bookings, firstName+" "+lastName)
 
 		fmt.Printf("%v booked %v tickets using %v email address.\n", bookings[0], userTickets, email)
@@ -51,6 +56,13 @@ func main() {
 
 		fmt.Printf("First names of the bookings are: %v\n", firstNames)
 		fmt.Printf("the array has %v items\n", len(bookings))
+
+		noTickets := remainingTickets == 0
+
+		if noTickets {
+			fmt.Println("Booked out!")
+			break
+		}
 	}
 
 }
