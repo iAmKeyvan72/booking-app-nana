@@ -1,6 +1,7 @@
 package main
 
 import (
+	"booking-app-nana/helper"
 	"fmt"
 	"strings"
 )
@@ -16,7 +17,7 @@ func main() {
 
 	for {
 		firstName, lastName, email, userTickets := getUserInput()
-		isValidName, isValidEmail, isValidTicketNumber := validateUserInputs(firstName, lastName, email, int(userTickets), int(remainingTickets))
+		isValidName, isValidEmail, isValidTicketNumber := helper.ValidateUserInputs(firstName, lastName, email, int(userTickets), int(remainingTickets))
 
 		if isValidName && isValidEmail && isValidTicketNumber {
 			remainingTickets, bookings := bookTicket(remainingTickets, userTickets, bookings, firstName, lastName, email)
