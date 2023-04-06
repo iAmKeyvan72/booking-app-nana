@@ -3,6 +3,7 @@ package main
 import (
 	"booking-app-nana/helper"
 	"fmt"
+	"time"
 )
 
 const conferenceName = "Go Conference"
@@ -28,6 +29,7 @@ func main() {
 
 		if isValidName && isValidEmail && isValidTicketNumber {
 			bookTicket(userTickets, firstName, lastName, email)
+			go sendTicket(firstName, userTickets)
 			firstNames := getFirstNames()
 
 			fmt.Printf("First names of the bookings are: %v\n", firstNames)
@@ -94,4 +96,12 @@ func bookTicket(userTickets uint, firstName string, lastName string, email strin
 
 	fmt.Printf("%v booked %v tickets using %v email address.\n", userData.firstName, userTickets, email)
 	fmt.Printf("%v tickets are remained.\n", remainingTickets)
+}
+
+func sendTicket(name string, tickets uint) {
+	time.Sleep(5 * time.Second)
+	ticketsMsg := fmt.Sprintf("%v tickets are being send.\n", tickets)
+	fmt.Printf("###############################")
+	fmt.Printf("%v thanks for buying the tickets.\n%v", name, ticketsMsg)
+	fmt.Printf("###############################")
 }
