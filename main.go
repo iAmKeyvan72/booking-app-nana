@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"strings"
+)
 
 func main() {
 	conferenceName := "Go Conference"
@@ -14,27 +17,40 @@ func main() {
 
 	bookings := []string{}
 
-	var firstName string
-	var lastName string
-	var email string
-	var userTickets uint
+	for {
 
-	fmt.Println("Enter your first name")
-	fmt.Scan(&firstName)
+		var firstName string
+		var lastName string
+		var email string
+		var userTickets uint
 
-	fmt.Println("Enter your last name")
-	fmt.Scan(&lastName)
+		fmt.Println("Enter your first name")
+		fmt.Scan(&firstName)
 
-	fmt.Println("Enter your email address")
-	fmt.Scan(&email)
+		fmt.Println("Enter your last name")
+		fmt.Scan(&lastName)
 
-	fmt.Println("How many tickets you need?")
-	fmt.Scan(&userTickets)
+		fmt.Println("Enter your email address")
+		fmt.Scan(&email)
 
-	remainingTickets = conferenceTickets - userTickets
-	bookings = append(bookings, firstName+" "+lastName)
+		fmt.Println("How many tickets you need?")
+		fmt.Scan(&userTickets)
 
-	fmt.Printf("%v booked %v tickets using %v email address.\n", bookings[0], userTickets, email)
-	fmt.Printf("%v tickets are remained.\n", remainingTickets)
-	fmt.Printf("%v\n", len(bookings))
+		remainingTickets = conferenceTickets - userTickets
+		bookings = append(bookings, firstName+" "+lastName)
+
+		fmt.Printf("%v booked %v tickets using %v email address.\n", bookings[0], userTickets, email)
+		fmt.Printf("%v tickets are remained.\n", remainingTickets)
+
+		firstNames := []string{}
+
+		for _, booking := range bookings {
+			names := strings.Fields(booking)
+			firstNames = append(firstNames, names[0])
+		}
+
+		fmt.Printf("First names of the bookings are: %v\n", firstNames)
+		fmt.Printf("the array has %v items\n", len(bookings))
+	}
+
 }
