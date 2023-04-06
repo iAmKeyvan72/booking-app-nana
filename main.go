@@ -3,8 +3,11 @@ package main
 import (
 	"booking-app-nana/helper"
 	"fmt"
+	"sync"
 	"time"
 )
+
+var wg = sync.WaitGroup{}
 
 const conferenceName = "Go Conference"
 const conferenceTickets uint = 50
@@ -23,26 +26,27 @@ func main() {
 
 	greetUsers()
 
-	for {
-		firstName, lastName, email, userTickets := getUserInput()
-		isValidName, isValidEmail, isValidTicketNumber := helper.ValidateUserInputs(firstName, lastName, email, int(userTickets), int(remainingTickets))
+	firstName, lastName, email, userTickets := getUserInput()
+	isValidName, isValidEmail, isValidTicketNumber := helper.ValidateUserInputs(firstName, lastName, email, int(userTickets), int(remainingTickets))
 
-		if isValidName && isValidEmail && isValidTicketNumber {
-			bookTicket(userTickets, firstName, lastName, email)
-			go sendTicket(firstName, userTickets)
-			firstNames := getFirstNames()
+	if isValidName && isValidEmail && isValidTicketNumber {
+		bookTicket(userTickets, firstName, lastName, email)
 
-			fmt.Printf("First names of the bookings are: %v\n", firstNames)
-			fmt.Printf("the array has %v items\n", len(bookings))
+		wg.Add(1)
+		go sendTicket(firstName, userTickets)
+		firstNames := getFirstNames()
 
-			if remainingTickets == 0 {
-				fmt.Println("Booked out!")
-				break
-			}
-		} else {
-			fmt.Printf("No a valid info provided\n")
+		fmt.Printf("First names of the bookings are: %v\n", firstNames)
+		fmt.Printf("the array has %v items\n", len(bookings))
+
+		if remainingTickets == 0 {
+			fmt.Println("Booked out!")
 		}
+	} else {
+		fmt.Printf("No a valid info provided\n")
 	}
+
+	wg.Wait()
 }
 
 func greetUsers() {
@@ -104,4 +108,6 @@ func sendTicket(name string, tickets uint) {
 	fmt.Printf("###############################")
 	fmt.Printf("%v thanks for buying the tickets.\n%v", name, ticketsMsg)
 	fmt.Printf("###############################")
+
+	wg.Done()
 }
